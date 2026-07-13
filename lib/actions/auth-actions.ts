@@ -29,12 +29,18 @@ export async function demoSignInPartnerAction(_prevState: AuthActionState, formD
   redirect('/dashboard');
 }
 
+// Only used when NEXT_PUBLIC_DEMO_STAFF_CODE is left unset, so the demo
+// build's staff side is fully click-through-able with zero configuration.
+// Not a secret — demo mode only ever serves the fictional dataset in
+// lib/demo/data.ts, never real data, so there is nothing this code protects.
+const FALLBACK_DEMO_STAFF_CODE = 'ecl-demo';
+
 export async function demoSignInStaffAction(_prevState: AuthActionState, formData: FormData): Promise<AuthActionState> {
   if (!isDemoMode()) return { error: 'Demo sign-in is not available.' };
 
   const code = String(formData.get('code') ?? '').trim();
-  const expected = process.env.NEXT_PUBLIC_DEMO_STAFF_CODE;
-  if (!expected || code !== expected) {
+  const expected = process.env.NEXT_PUBLIC_DEMO_STAFF_CODE || FALLBACK_DEMO_STAFF_CODE;
+  if (code !== expected) {
     return { error: 'Incorrect team code. Please try again.' };
   }
 
@@ -49,8 +55,14 @@ export async function signOutAction(): Promise<void> {
   if (isDemoMode()) {
     clearDemoSession();
   } else {
-    const supabase = createServerSupabaseClient();
-    await supabase.auth.signOut();
+    try {
+      const supabase = createServerSupabaseClient();
+      await supabase.auth.signOut();
+    } catch (err) {
+      // Sign-out should never trap the user on a broken page — log the
+      // real cause server-side and still send them back to /login.
+      console.error('[auth] signOutAction failed to sign out via Supabase:', err);
+    }
   }
   redirect('/login');
 }

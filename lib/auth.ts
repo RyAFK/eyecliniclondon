@@ -18,25 +18,37 @@ export async function getCurrentUser(): Promise<UserProfile | null> {
     return getDemoSessionUser();
   }
 
-  const supabase = createServerSupabaseClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return null;
+  // Live mode only runs when Supabase is actually configured (see
+  // isDemoMode()), but Supabase Auth/Postgres calls can still fail at
+  // request time — a transient network error, an expired/invalid key, a
+  // misconfigured project, etc. Treat that as "not signed in" (the caller
+  // redirects to /login) rather than letting it crash the whole page with
+  // an unhandled 500; the real cause is logged server-side for diagnosis
+  // without ever being shown to the visitor.
+  try {
+    const supabase = createServerSupabaseClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) return null;
 
-  const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
-  if (!profile || !profile.active) return null;
+    const { data: profile, error } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+    if (error || !profile || !profile.active) return null;
 
-  return {
-    id: profile.id,
-    email: profile.email,
-    fullName: profile.full_name,
-    role: profile.role,
-    practiceId: profile.practice_id,
-    active: profile.active,
-    createdAt: profile.created_at,
-    updatedAt: profile.updated_at,
-  };
+    return {
+      id: profile.id,
+      email: profile.email,
+      fullName: profile.full_name,
+      role: profile.role,
+      practiceId: profile.practice_id,
+      active: profile.active,
+      createdAt: profile.created_at,
+      updatedAt: profile.updated_at,
+    };
+  } catch (err) {
+    console.error('[auth] getCurrentUser failed in live mode:', err);
+    return null;
+  }
 }
 
 export async function requireUser(): Promise<UserProfile> {
