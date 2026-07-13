@@ -29,6 +29,18 @@ export const metadata: Metadata = {
   description: 'Refer patients to Eye Clinic London and track their journey from referral to treatment.',
 };
 
+/**
+ * Every route in this app reads the signed-in user's session (via cookies)
+ * to decide what to render, so none of it can be meaningfully static.
+ * Without this, Next attempts to prerender pages at build time; on a fresh
+ * deploy with no Supabase/demo env vars configured, the auth lookup throws
+ * before Next's own dynamic-API detection (cookies()) kicks in, which
+ * aborts `next build` entirely instead of just failing at request time.
+ * Forcing dynamic rendering here means the build only compiles the code —
+ * it no longer depends on runtime environment configuration to succeed.
+ */
+export const dynamic = 'force-dynamic';
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en-GB" suppressHydrationWarning>
