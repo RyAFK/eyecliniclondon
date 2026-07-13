@@ -1,0 +1,9 @@
+export * as referralsService from './referrals.service';
+export * as practicesService from './practices.service';
+export * as analyticsService from './analytics.service';
+export * as tasksService from './tasks.service';
+export * as notificationsService from './notifications.service';
+export * as educationService from './education.service';
+export * as auditService from './audit.service';
+export * as documentsService from './documents.service';
+export * as usersService from './users.service';
