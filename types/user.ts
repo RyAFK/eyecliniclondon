@@ -20,6 +20,19 @@ export function isPartnerRole(role: UserRole): boolean {
   return PARTNER_ROLES.includes(role);
 }
 
+/** Which notification categories a user wants delivered. All default to on. */
+export interface NotificationPreferences {
+  referralUpdates: boolean;
+  cpdInvitations: boolean;
+  clinicNews: boolean;
+}
+
+export const DEFAULT_NOTIFICATION_PREFERENCES: NotificationPreferences = {
+  referralUpdates: true,
+  cpdInvitations: true,
+  clinicNews: true,
+};
+
 /** Mirrors the `profiles` table — one row per Supabase Auth user. */
 export interface UserProfile {
   id: string;
@@ -29,6 +42,7 @@ export interface UserProfile {
   /** Immutable FK to practices.id. Null for ECL staff/admin accounts. */
   practiceId: string | null;
   active: boolean;
+  notificationPreferences: NotificationPreferences;
   createdAt: string;
   updatedAt: string;
 }

@@ -1,5 +1,6 @@
 import type { Practice } from '@/types/practice';
 import type { UserProfile } from '@/types/user';
+import { DEFAULT_NOTIFICATION_PREFERENCES } from '@/types/user';
 import type { Referral, ReferralStatusHistoryEntry } from '@/types/referral';
 import type { Task } from '@/types/task';
 import type { Notification } from '@/types/notification';
@@ -90,6 +91,7 @@ export const DEMO_USERS: UserProfile[] = [
     role: 'partner_admin',
     practiceId: DEMO_PRACTICES[0]!.id,
     active: true,
+    notificationPreferences: { ...DEFAULT_NOTIFICATION_PREFERENCES },
     createdAt: '2024-01-16T09:00:00.000Z',
     updatedAt: '2024-01-16T09:00:00.000Z',
   },
@@ -100,6 +102,7 @@ export const DEMO_USERS: UserProfile[] = [
     role: 'partner_user',
     practiceId: DEMO_PRACTICES[1]!.id,
     active: true,
+    notificationPreferences: { ...DEFAULT_NOTIFICATION_PREFERENCES },
     createdAt: '2024-02-04T09:00:00.000Z',
     updatedAt: '2024-02-04T09:00:00.000Z',
   },
@@ -110,6 +113,7 @@ export const DEMO_USERS: UserProfile[] = [
     role: 'ecl_admin',
     practiceId: null,
     active: true,
+    notificationPreferences: { ...DEFAULT_NOTIFICATION_PREFERENCES },
     createdAt: '2023-11-01T09:00:00.000Z',
     updatedAt: '2023-11-01T09:00:00.000Z',
   },
@@ -120,6 +124,7 @@ export const DEMO_USERS: UserProfile[] = [
     role: 'ecl_staff',
     practiceId: null,
     active: true,
+    notificationPreferences: { ...DEFAULT_NOTIFICATION_PREFERENCES },
     createdAt: '2023-11-05T09:00:00.000Z',
     updatedAt: '2023-11-05T09:00:00.000Z',
   },
@@ -195,6 +200,7 @@ export const DEMO_REFERRALS: Referral[] = SEED_ROWS.map((row, i) => {
     presentingSymptoms: null,
     unaidedVisualAcuity: null,
     bestCorrectedVisualAcuity: null,
+    source: 'direct',
     journeyStatus: row.journeyStatus,
     outcome: row.outcome,
     feeAmount: TREATMENT_FEE_MAP[row.treatmentType],

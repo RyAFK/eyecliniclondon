@@ -100,6 +100,15 @@ export const POSITIVE_OUTCOMES: ReferralOutcome[] = ['treatment_successful', 'on
 export const PREFERRED_CONTACT_METHODS = ['phone', 'email', 'either'] as const;
 export type PreferredContactMethod = (typeof PREFERRED_CONTACT_METHODS)[number];
 
+/** How a referral was initiated — surfaced to staff and, subtly, to the referrer. */
+export const REFERRAL_SOURCES = ['direct', 'referral_assistant'] as const;
+export type ReferralSource = (typeof REFERRAL_SOURCES)[number];
+
+export const REFERRAL_SOURCE_LABELS: Record<ReferralSource, string> = {
+  direct: 'Direct referral',
+  referral_assistant: 'Referral Assistant',
+};
+
 export const FEE_STATUSES = ['not_eligible', 'pending', 'invoiced', 'paid'] as const;
 export type FeeStatus = (typeof FEE_STATUSES)[number];
 
@@ -138,6 +147,9 @@ export interface Referral {
   presentingSymptoms: string | null;
   unaidedVisualAcuity: string | null;
   bestCorrectedVisualAcuity: string | null;
+
+  /** How this referral was initiated — 'referral_assistant' when the referrer used the pathway guidance tool first. */
+  source: ReferralSource;
 
   journeyStatus: JourneyStatus;
   outcome: ReferralOutcome | null;
@@ -187,4 +199,6 @@ export interface ReferralSubmission {
   presentingSymptoms: string | null;
   unaidedVisualAcuity: string | null;
   bestCorrectedVisualAcuity: string | null;
+  /** Defaults to 'direct' when omitted. */
+  source?: ReferralSource;
 }

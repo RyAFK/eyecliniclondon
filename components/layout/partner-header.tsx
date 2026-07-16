@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Bell, Building2, ChevronDown, GraduationCap, Home, ListChecks, LogOut, Menu, X } from 'lucide-react';
+import { Bell, Building2, ChevronDown, GraduationCap, Home, ListChecks, LogOut, Menu, Sparkles, UserCircle, X } from 'lucide-react';
 import { COLOR } from '@/lib/theme';
 import { EclWordmark } from '@/components/ui/ecl-wordmark';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
@@ -14,6 +14,7 @@ import { initials } from '@/lib/utils';
 const NAV_ITEMS = [
   { label: 'Home', href: '/dashboard', icon: Home },
   { label: 'Referrals', href: '/dashboard/referrals', icon: ListChecks },
+  { label: 'Referral Assistant', href: '/dashboard/referral-assistant', icon: Sparkles },
   { label: 'Education', href: '/dashboard/education', icon: GraduationCap },
   { label: 'Notifications', href: '/dashboard/notifications', icon: Bell },
 ];
@@ -81,7 +82,14 @@ export function PartnerHeader({ practiceName, userName }: { practiceName: string
               {initials(userName)}
             </button>
             {menuOpen && (
-              <div className="ecl-scale-in absolute right-0 z-20 mt-1.5 w-40 overflow-hidden rounded-lg" style={{ background: COLOR.bg, border: `1px solid ${COLOR.border}` }}>
+              <div className="ecl-scale-in absolute right-0 z-20 mt-1.5 w-44 overflow-hidden rounded-lg" style={{ background: COLOR.bg, border: `1px solid ${COLOR.border}` }}>
+                <Link
+                  href="/dashboard/account"
+                  className="flex w-full items-center gap-2 px-3.5 py-2.5 text-left text-sm transition-colors duration-150 hover:bg-black/5"
+                  style={{ color: COLOR.text }}
+                >
+                  <UserCircle size={15} /> Account
+                </Link>
                 <form action={signOutAction}>
                   <button
                     type="submit"

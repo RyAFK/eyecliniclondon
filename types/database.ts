@@ -37,6 +37,7 @@ export interface Database {
           role: 'partner_user' | 'partner_admin' | 'ecl_staff' | 'ecl_admin';
           practice_id: string | null;
           active: boolean;
+          notification_preferences: { referralUpdates: boolean; cpdInvitations: boolean; clinicNews: boolean };
           created_at: string;
           updated_at: string;
         };
@@ -65,6 +66,7 @@ export interface Database {
           best_corrected_visual_acuity: string | null;
           journey_status: string;
           outcome: string | null;
+          source: 'direct' | 'referral_assistant';
           fee_amount: number;
           fee_status: 'not_eligible' | 'pending' | 'invoiced' | 'paid';
           created_at: string;

@@ -5,11 +5,13 @@ import {
   DEMO_TASKS,
   DEMO_NOTIFICATIONS,
   DEMO_AUDIT_LOG,
+  DEMO_USERS,
 } from '@/lib/demo/data';
 import type { Referral, ReferralStatusHistoryEntry } from '@/types/referral';
 import type { Task } from '@/types/task';
 import type { Notification } from '@/types/notification';
 import type { AuditLogEntry } from '@/types/audit';
+import type { UserProfile } from '@/types/user';
 
 interface DemoStore {
   referrals: Referral[];
@@ -17,6 +19,8 @@ interface DemoStore {
   tasks: Task[];
   notifications: Notification[];
   auditLog: AuditLogEntry[];
+  /** Mutable so profile edits (name, notification preferences) persist for the session. */
+  users: UserProfile[];
   referenceSeq: number;
 }
 
@@ -39,6 +43,7 @@ function createStore(): DemoStore {
     tasks: DEMO_TASKS.map((t) => ({ ...t })),
     notifications: DEMO_NOTIFICATIONS.map((n) => ({ ...n })),
     auditLog: DEMO_AUDIT_LOG.map((a) => ({ ...a })),
+    users: DEMO_USERS.map((u) => ({ ...u, notificationPreferences: { ...u.notificationPreferences } })),
     referenceSeq: DEMO_REFERRALS.length + 1,
   };
 }

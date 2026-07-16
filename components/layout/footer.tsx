@@ -8,7 +8,7 @@ import { useTheme } from '@/components/ui/theme-provider';
 export function Footer() {
   const { theme } = useTheme();
   return (
-    <footer className="mx-auto max-w-5xl px-4 pb-4 pt-8" style={{ paddingBottom: '6rem' }}>
+    <footer className="mx-auto max-w-5xl px-4 pb-24 pt-8 lg:pb-4">
       <div className="flex flex-col items-center gap-2 border-t pt-6 text-center" style={{ borderColor: COLOR.border }}>
         <EclWordmark tone={theme === 'night' ? 'white' : 'dark'} size="sm" className="opacity-70" />
         <p className="text-xs" style={{ color: COLOR.textMuted }}>

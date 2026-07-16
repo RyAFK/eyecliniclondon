@@ -4,7 +4,7 @@ import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { isDemoMode } from '@/lib/demo/config';
 import { getDemoSessionUser } from '@/lib/demo/session';
 import type { UserProfile, UserRole } from '@/types/user';
-import { isStaffRole } from '@/types/user';
+import { DEFAULT_NOTIFICATION_PREFERENCES, isStaffRole } from '@/types/user';
 
 /**
  * Single entry point for "who is signed in" — every server component, route
@@ -42,6 +42,7 @@ export async function getCurrentUser(): Promise<UserProfile | null> {
       role: profile.role,
       practiceId: profile.practice_id,
       active: profile.active,
+      notificationPreferences: profile.notification_preferences ?? DEFAULT_NOTIFICATION_PREFERENCES,
       createdAt: profile.created_at,
       updatedAt: profile.updated_at,
     };

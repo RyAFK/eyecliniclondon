@@ -7,7 +7,7 @@ import { COLOR, FONT_DISPLAY, FONT_MONO } from '@/lib/theme';
 import { ConfettiBurst } from '@/components/referrals/confetti-burst';
 import { PatientDetailsStep, ReferralTypeStep, ClinicalInfoStep, DocumentsStep, ReviewStep, type PatientState, type ClinicalState } from '@/components/referrals/wizard-steps';
 import { patientDetailsSchema, referralTypeSchema } from '@/lib/validation/referral';
-import { treatmentName, type TreatmentTypeId } from '@/types/referral';
+import { treatmentName, type ReferralSource, type TreatmentTypeId } from '@/types/referral';
 import { submitReferralAction } from '@/lib/actions/referral-actions';
 import { formatDate } from '@/lib/utils';
 
@@ -17,14 +17,20 @@ const STEPS = ['Patient details', 'Referral type', 'Clinical information', 'Docu
 const EMPTY_PATIENT: PatientState = { firstName: '', lastName: '', dob: '', phone: '', email: '', contactMethod: 'either', consent: false };
 const EMPTY_CLINICAL: ClinicalState = { reason: '', symptoms: '', unaidedVisualAcuity: '', bestCorrectedVisualAcuity: '' };
 
-export function ReferralWizard() {
+export function ReferralWizard({
+  initialTreatmentId,
+  source = 'direct',
+}: {
+  initialTreatmentId?: TreatmentTypeId;
+  source?: ReferralSource;
+}) {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<{ reference: string; date: string } | null>(null);
   const [files, setFiles] = useState<File[]>([]);
   const [patient, setPatient] = useState<PatientState>(EMPTY_PATIENT);
-  const [treatmentId, setTreatmentId] = useState<TreatmentTypeId | ''>('');
+  const [treatmentId, setTreatmentId] = useState<TreatmentTypeId | ''>(initialTreatmentId ?? '');
   const [clinical, setClinical] = useState<ClinicalState>(EMPTY_CLINICAL);
   const [error, setError] = useState('');
   const [confetti, setConfetti] = useState(false);
@@ -86,6 +92,7 @@ export function ReferralWizard() {
       presentingSymptoms: clinical.symptoms || null,
       unaidedVisualAcuity: clinical.unaidedVisualAcuity || null,
       bestCorrectedVisualAcuity: clinical.bestCorrectedVisualAcuity || null,
+      source,
     });
 
     if (!referral || submitError) {
@@ -157,6 +164,16 @@ export function ReferralWizard() {
               {treatmentName(treatmentId)}
             </dd>
           </div>
+          {source === 'referral_assistant' && (
+            <div>
+              <dt className="text-xs font-medium uppercase tracking-wide" style={{ color: COLOR.textMuted }}>
+                Origin
+              </dt>
+              <dd className="mt-1 text-lg" style={{ color: COLOR.text }}>
+                Referral Assistant
+              </dd>
+            </div>
+          )}
         </dl>
 
         <div className="ecl-fade-up mt-8 flex flex-col justify-center gap-3 sm:flex-row" style={{ animationDelay: '280ms' }}>
@@ -190,6 +207,11 @@ export function ReferralWizard() {
 
       <div style={{ flex: 1, overflowY: 'auto' }}>
         <div className="mx-auto max-w-3xl px-5 py-6 sm:px-6">
+          {step === 1 && source === 'referral_assistant' && (
+            <p className="ecl-fade-in mb-4 rounded-lg p-3 text-sm" style={{ background: COLOR.accentTint, color: COLOR.accent }}>
+              Suggested by the Referral Assistant — you can change this pathway before submitting.
+            </p>
+          )}
           <div key={step} className="ecl-fade-in">
             {step === 0 && <PatientDetailsStep patient={patient} onChange={setPatient} />}
             {step === 1 && <ReferralTypeStep treatmentId={treatmentId} onSelect={setTreatmentId} />}

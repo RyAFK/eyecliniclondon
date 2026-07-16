@@ -39,6 +39,7 @@ function mapRow(row: ReferralRow, practiceName: string): Referral {
     presentingSymptoms: row.presenting_symptoms,
     unaidedVisualAcuity: row.unaided_visual_acuity,
     bestCorrectedVisualAcuity: row.best_corrected_visual_acuity,
+    source: (row.source as Referral['source']) ?? 'direct',
     journeyStatus: row.journey_status as JourneyStatus,
     outcome: row.outcome as ReferralOutcome | null,
     feeAmount: Number(row.fee_amount),
@@ -149,6 +150,7 @@ export async function createReferral(user: UserProfile, submission: ReferralSubm
       presentingSymptoms: parsed.presentingSymptoms,
       unaidedVisualAcuity: parsed.unaidedVisualAcuity,
       bestCorrectedVisualAcuity: parsed.bestCorrectedVisualAcuity,
+      source: parsed.source,
       journeyStatus: 'referral_received',
       outcome: null,
       feeAmount,
@@ -213,6 +215,7 @@ export async function createReferral(user: UserProfile, submission: ReferralSubm
       presenting_symptoms: parsed.presentingSymptoms,
       unaided_visual_acuity: parsed.unaidedVisualAcuity,
       best_corrected_visual_acuity: parsed.bestCorrectedVisualAcuity,
+      source: parsed.source,
       fee_amount: feeAmount,
       fee_status: feeAmount > 0 ? 'pending' : 'not_eligible',
       // reference, journey_status, outcome are all server-defaulted / trigger-generated.

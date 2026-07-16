@@ -1,6 +1,6 @@
 import 'server-only';
 import { cookies } from 'next/headers';
-import { DEMO_USERS } from '@/lib/demo/data';
+import { getDemoStore } from '@/lib/demo/store';
 import type { UserProfile } from '@/types/user';
 
 const DEMO_SESSION_COOKIE = 'ecl_demo_session';
@@ -29,5 +29,5 @@ export function clearDemoSession() {
 export function getDemoSessionUser(): UserProfile | null {
   const userId = cookies().get(DEMO_SESSION_COOKIE)?.value;
   if (!userId) return null;
-  return DEMO_USERS.find((u) => u.id === userId) ?? null;
+  return getDemoStore().users.find((u) => u.id === userId) ?? null;
 }
