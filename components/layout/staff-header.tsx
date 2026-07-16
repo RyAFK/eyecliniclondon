@@ -26,8 +26,12 @@ export function StaffHeader({ role }: { role: UserRole }) {
   const { theme } = useTheme();
   const items = role === 'ecl_admin' ? [...NAV_ITEMS, ...ADMIN_ONLY_ITEMS] : NAV_ITEMS;
 
+  // Plain opaque background — see the comment in partner-header.tsx: a
+  // `${COLOR.bg}F2`-style alpha suffix is invalid CSS on a var() reference,
+  // which left this sticky header fully transparent and, combined with
+  // backdrop-filter, showed scrolled-past content blurred right through it.
   return (
-    <header className="sticky top-0 z-40" style={{ background: `${COLOR.bg}F2`, borderBottom: `1px solid ${COLOR.border}`, backdropFilter: 'blur(6px)' }}>
+    <header className="sticky top-0 z-40" style={{ background: COLOR.bg, borderBottom: `1px solid ${COLOR.border}` }}>
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
         <div className="flex items-center gap-3">
           <Link href="/staff">

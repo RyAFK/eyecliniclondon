@@ -8,8 +8,12 @@ import { COLOR } from '@/lib/theme';
 export function PartnerBottomNav() {
   const pathname = usePathname();
 
+  // Plain opaque background — see the comment in partner-header.tsx: a
+  // `${COLOR.bg}F5`-style alpha suffix is invalid CSS on a var() reference,
+  // which left this bar fully transparent and, combined with backdrop-filter,
+  // showed scrolled-past content blurred right through it.
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40" style={{ background: `${COLOR.bg}F5`, backdropFilter: 'blur(10px)', borderTop: `1px solid ${COLOR.border}`, paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+    <nav className="fixed inset-x-0 bottom-0 z-40" style={{ background: COLOR.bg, borderTop: `1px solid ${COLOR.border}`, paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
       <div className="mx-auto flex max-w-5xl items-end justify-around px-4 pb-2 pt-2">
         <Link href="/dashboard" className="ecl-btn flex flex-col items-center gap-1 rounded-lg px-3 py-1.5" style={{ color: pathname === '/dashboard' ? COLOR.text : COLOR.textMuted }}>
           <Home size={20} strokeWidth={pathname === '/dashboard' ? 2.4 : 1.8} />
