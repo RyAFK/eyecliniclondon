@@ -186,6 +186,21 @@ export interface Database {
         Update: Partial<Database['public']['Tables']['education_resources']['Row']>;
         Relationships: [];
       };
+      education_module_progress: {
+        Row: {
+          id: string;
+          user_id: string;
+          module_id: string;
+          knowledge_check_score: number | null;
+          knowledge_check_total: number | null;
+          completed: boolean;
+          completed_at: string | null;
+          updated_at: string;
+        };
+        Insert: Partial<Database['public']['Tables']['education_module_progress']['Row']> & { user_id: string; module_id: string };
+        Update: Partial<Database['public']['Tables']['education_module_progress']['Row']>;
+        Relationships: [];
+      };
       audit_log: {
         Row: {
           id: string;

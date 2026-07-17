@@ -12,6 +12,7 @@ import type { Task } from '@/types/task';
 import type { Notification } from '@/types/notification';
 import type { AuditLogEntry } from '@/types/audit';
 import type { UserProfile } from '@/types/user';
+import type { EducationModuleProgress } from '@/types/education-module';
 
 interface DemoStore {
   referrals: Referral[];
@@ -21,6 +22,8 @@ interface DemoStore {
   auditLog: AuditLogEntry[];
   /** Mutable so profile edits (name, notification preferences) persist for the session. */
   users: UserProfile[];
+  /** Clinical Education Hub completion state — module content itself is static, see lib/education-modules.ts. */
+  moduleProgress: EducationModuleProgress[];
   referenceSeq: number;
 }
 
@@ -44,6 +47,7 @@ function createStore(): DemoStore {
     notifications: DEMO_NOTIFICATIONS.map((n) => ({ ...n })),
     auditLog: DEMO_AUDIT_LOG.map((a) => ({ ...a })),
     users: DEMO_USERS.map((u) => ({ ...u, notificationPreferences: { ...u.notificationPreferences } })),
+    moduleProgress: [],
     referenceSeq: DEMO_REFERRALS.length + 1,
   };
 }
