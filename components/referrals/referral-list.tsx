@@ -1,7 +1,8 @@
 import Link from 'next/link';
-import { ListChecks } from 'lucide-react';
+import { ListChecks, Sparkles } from 'lucide-react';
 import { COLOR } from '@/lib/theme';
 import { JourneyStatusBadge } from '@/components/referrals/status-badge';
+import { Pill } from '@/components/ui/pill';
 import { treatmentName, type Referral } from '@/types/referral';
 import { formatCurrency, formatDate } from '@/lib/utils';
 
@@ -24,8 +25,17 @@ export function ReferralList({ referrals, staffLinks = false }: { referrals: Ref
                 <p className="text-sm font-medium" style={{ color: COLOR.text }}>
                   {r.patientFirstName} {r.patientLastName.charAt(0)}. · {treatmentName(r.treatmentType)}
                 </p>
-                <p className="mt-0.5 text-xs" style={{ color: COLOR.textMuted }}>
-                  {r.reference} · {formatDate(r.createdAt)} · {formatCurrency(r.feeAmount)}
+                <p className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs" style={{ color: COLOR.textMuted }}>
+                  <span>
+                    {r.reference} · {formatDate(r.createdAt)} · {formatCurrency(r.feeAmount)}
+                  </span>
+                  {r.source === 'referral_assistant' && (
+                    <Pill tone="accent">
+                      <span className="flex items-center gap-1">
+                        <Sparkles size={10} /> Assistant
+                      </span>
+                    </Pill>
+                  )}
                 </p>
               </div>
               <JourneyStatusBadge status={r.journeyStatus} />

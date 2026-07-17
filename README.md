@@ -69,7 +69,9 @@ Demo mode data lives in [`lib/demo/data.ts`](lib/demo/data.ts) (fictional practi
     /referrals              "My referrals" + stat drilldowns
     /insights                Practice-level analytics
     /education               CPD events & clinic news
+    /referral-assistant        Non-diagnostic pathway guidance -> pre-fills /refer
     /notifications            Notification inbox
+    /account                   Profile + notification preferences
   /staff                  ECL staff area (requires ecl_staff/ecl_admin)
     /analytics /referrals /referrals/[id] /partners /partners/[id]
     /tasks /fees /audit (ecl_admin only)

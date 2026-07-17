@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { JOURNEY_STATUSES, PREFERRED_CONTACT_METHODS, REFERRAL_OUTCOMES, TREATMENT_TYPES } from '@/types/referral';
+import { JOURNEY_STATUSES, PREFERRED_CONTACT_METHODS, REFERRAL_OUTCOMES, REFERRAL_SOURCES, TREATMENT_TYPES } from '@/types/referral';
 
 const treatmentIds = TREATMENT_TYPES.map((t) => t.id) as [string, ...string[]];
 
@@ -54,6 +54,7 @@ export const referralSubmissionSchema = z.object({
   presentingSymptoms: z.string().trim().max(2000).nullable(),
   unaidedVisualAcuity: z.string().trim().max(50).nullable(),
   bestCorrectedVisualAcuity: z.string().trim().max(50).nullable(),
+  source: z.enum(REFERRAL_SOURCES).optional().default('direct'),
 });
 
 export type ReferralSubmissionInput = z.infer<typeof referralSubmissionSchema>;

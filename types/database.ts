@@ -37,6 +37,7 @@ export interface Database {
           role: 'partner_user' | 'partner_admin' | 'ecl_staff' | 'ecl_admin';
           practice_id: string | null;
           active: boolean;
+          notification_preferences: { referralUpdates: boolean; cpdInvitations: boolean; clinicNews: boolean };
           created_at: string;
           updated_at: string;
         };
@@ -65,6 +66,7 @@ export interface Database {
           best_corrected_visual_acuity: string | null;
           journey_status: string;
           outcome: string | null;
+          source: 'direct' | 'referral_assistant';
           fee_amount: number;
           fee_status: 'not_eligible' | 'pending' | 'invoiced' | 'paid';
           created_at: string;
@@ -182,6 +184,21 @@ export interface Database {
         };
         Insert: Partial<Database['public']['Tables']['education_resources']['Row']> & { type: string; title: string; url: string };
         Update: Partial<Database['public']['Tables']['education_resources']['Row']>;
+        Relationships: [];
+      };
+      education_module_progress: {
+        Row: {
+          id: string;
+          user_id: string;
+          module_id: string;
+          knowledge_check_score: number | null;
+          knowledge_check_total: number | null;
+          completed: boolean;
+          completed_at: string | null;
+          updated_at: string;
+        };
+        Insert: Partial<Database['public']['Tables']['education_module_progress']['Row']> & { user_id: string; module_id: string };
+        Update: Partial<Database['public']['Tables']['education_module_progress']['Row']>;
         Relationships: [];
       };
       audit_log: {
